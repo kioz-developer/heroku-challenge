@@ -1,4 +1,5 @@
 # import necessary libraries
+import requests
 from models import create_classes
 import os
 from flask import (
@@ -32,6 +33,12 @@ Pet = create_classes(db)
 def home():
     return render_template("index.html")
 
+# used to discover our heroky deployment ip
+@app.route("/show_ip")
+def show_ip():
+    remote_url = os.environ.get('SHOW_IP_URL', '')
+    response = requests.get(remote_url)
+    return f"{response.text}"
 
 # Query the database and send the jsonified results
 @app.route("/send", methods=["GET", "POST"])
